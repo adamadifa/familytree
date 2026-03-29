@@ -126,6 +126,11 @@ class AddMemberModal extends Component
 
         $this->isOpen = false;
         $this->dispatch('refreshTree');
+        $this->dispatch('sweet-alert', [
+            'icon' => 'success',
+            'title' => 'Anggota Ditambahkan',
+            'text' => 'Data anggota baru berhasil disimpan ke silsilah.'
+        ]);
     }
 
     public function render()

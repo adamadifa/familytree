@@ -9,8 +9,6 @@ class FamilyTree extends Component
     public $members;
     public $relationships;
 
-    protected $listeners = ['refreshTree' => 'refreshTree'];
-
     public function mount()
     {
         $this->members = \App\Models\FamilyMember::all()->map(function ($member) {
@@ -20,6 +18,7 @@ class FamilyTree extends Component
         $this->relationships = \App\Models\Relationship::all();
     }
 
+    #[\Livewire\Attributes\On('refreshTree')]
     public function refreshTree()
     {
         $this->members = \App\Models\FamilyMember::all()->map(function ($member) {

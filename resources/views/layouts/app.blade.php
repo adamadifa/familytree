@@ -156,5 +156,22 @@
             </aside>
         </div>
         @livewireScripts
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            window.addEventListener('sweet-alert', event => {
+                const data = event.detail[0] || event.detail;
+                Swal.fire({
+                    icon: data.icon || 'success',
+                    title: data.title || 'Berhasil',
+                    text: data.text || '',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    customClass: {
+                        popup: 'rounded-2xl',
+                    }
+                });
+            });
+        </script>
     </body>
 </html>

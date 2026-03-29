@@ -126,9 +126,12 @@ class EditMemberModal extends Component
         }
 
         $this->closeModal();
-        
-        $this->dispatch('memberSelected', id: $member->id);
-        $this->dispatch('treeDataUpdated');
+        $this->dispatch('refreshTree');
+        $this->dispatch('sweet-alert', [
+            'icon' => 'success',
+            'title' => 'Perubahan Disimpan',
+            'text' => 'Biodatanya sudah berhasil diperbarui!'
+        ]);
     }
 
     public function render()
