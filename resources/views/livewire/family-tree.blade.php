@@ -106,12 +106,12 @@
                         return true;
                     });
                 } else {
-                    const baseChildren = p1Children.filter(cid => childToParents[cid].includes(parent2));
-                    if (spousesOfP1.length === 1 && spousesOfP1[0] === parent2) {
-                        const singleParentChildren = p1Children.filter(cid => childToParents[cid].length === 1);
-                        return [...new Set([...baseChildren, ...singleParentChildren])];
-                    }
-                    return baseChildren;
+                    // Ambil semua anak dari Orang Tua 1 + Orang Tua 2
+                    // Ini mencakup: Anak kandung berdua, Anak bawaan P1, dan Anak bawaan P2
+                    const p1Children = Object.keys(childToParents).map(Number).filter(cid => childToParents[cid].includes(parent1));
+                    const p2Children = Object.keys(childToParents).map(Number).filter(cid => childToParents[cid].includes(parent2));
+                    
+                    return [...new Set([...p1Children, ...p2Children])];
                 }
             }
 
