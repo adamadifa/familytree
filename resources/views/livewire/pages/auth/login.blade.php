@@ -42,7 +42,7 @@ new #[Layout('layouts.guest')] class extends Component
         <!-- Center: Headline -->
         <div>
             <h1 class="text-4xl font-bold text-white leading-snug tracking-tight mb-4">
-                Jaga & Abadikan<br>Warisan Keluarga Anda.
+                Jaga & Abadikan<br>Kenangan Keluarga Anda.
             </h1>
             <p class="text-slate-400 text-base leading-relaxed max-w-sm">
                 Platform silsilah keluarga yang memudahkan Anda memetakan, mendokumentasikan, dan berbagi sejarah keluarga lintas generasi.
@@ -72,7 +72,7 @@ new #[Layout('layouts.guest')] class extends Component
 
         <!-- Bottom: Footer -->
         <div>
-            <p class="text-slate-600 text-xs">&copy; {{ date('Y') }} SupenaFamily. Semua hak dilindungi.</p>
+            <p class="text-slate-600 text-xs">&copy; {{ date('Y') }} adamadifa_. Semua hak dilindungi.</p>
         </div>
     </div>
 
@@ -99,7 +99,8 @@ new #[Layout('layouts.guest')] class extends Component
             <!-- Session Status -->
             <x-auth-session-status class="mb-4" :status="session('status')" />
 
-            <form wire:submit="login" class="space-y-5">
+            <form wire:submit="login" method="POST" class="space-y-5">
+                @csrf
                 <!-- Email -->
                 <div>
                     <label for="email" class="block text-sm font-semibold text-slate-700 mb-1.5">Email</label>

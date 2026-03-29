@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>SupenaFamily — Abadikan Warisan Keluarga</title>
+        <title>adamadifa_ — Abadikan Kenangan Keluarga</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -172,13 +172,7 @@
             <!-- Main Content -->
             <div class="relative z-10 text-center px-6 max-w-3xl mx-auto">
 
-                <!-- Decorative top badge -->
-                <div class="opacity-0 animate-fade-in-up delay-100 mb-6" style="animation-fill-mode: both;">
-                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card text-xs font-semibold text-gold uppercase tracking-[0.2em]">
-                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        Warisan Keluarga
-                    </span>
-                </div>
+
 
                 <!-- Main Title -->
                 <h1 class="opacity-0 animate-fade-in-up delay-200" style="animation-fill-mode: both;">
@@ -200,7 +194,7 @@
                 <!-- Tagline -->
                 <div class="opacity-0 animate-fade-in-up delay-500" style="animation-fill-mode: both;">
                     <p class="font-serif text-xl md:text-2xl lg:text-3xl text-white/90 italic font-medium tracking-wide mb-3">
-                        "Abadikan Warisan, Hubungkan Generasi"
+                        "Abadikan Kenangan, Hubungkan Generasi"
                     </p>
                     <p class="text-sm md:text-base text-slate-400 font-light max-w-lg mx-auto leading-relaxed">
                         Jelajahi dan dokumentasikan silsilah keluarga besar Supena — dari akar hingga pucuk, lintas generasi dan waktu.
@@ -258,7 +252,7 @@
                 <div class="h-24 bg-gradient-to-t from-slate-950/80 to-transparent"></div>
                 <div class="bg-slate-950/60 backdrop-blur-sm py-4 px-6 flex items-center justify-center">
                     <p class="text-white/30 text-[11px] uppercase tracking-[0.2em] font-medium">
-                        &copy; {{ date('Y') }} SupenaFamily &middot; Menjaga Silsilah, Merangkai Kenangan
+                        &copy; {{ date('Y') }} adamadifa_ &middot; Menjaga Silsilah, Merangkai Kenangan
                     </p>
                 </div>
             </div>

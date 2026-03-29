@@ -13,6 +13,7 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @livewireStyles
 
         <!-- Flatpickr Datepicker -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -154,5 +155,6 @@
                 </nav>
             </aside>
         </div>
+        @livewireScripts
     </body>
 </html>
