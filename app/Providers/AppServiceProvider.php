@@ -21,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
     {
         if (str_starts_with(config('app.url'), 'https://')) {
             \Illuminate\Support\Facades\URL::forceScheme('https');
+            \Illuminate\Support\Facades\URL::forceRootUrl(config('app.url'));
         }
     }
 }
