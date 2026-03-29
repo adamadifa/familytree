@@ -40,7 +40,6 @@
             const members = (newData && newData.members) ? newData.members : @json($members);
             const relationships = (newData && newData.relationships) ? newData.relationships : @json($relationships);
 
-            containerEl.innerHTML = ''; 
             const width = containerEl.clientWidth;
             const height = containerEl.clientHeight;
             // ... (rest of the D3 logic)
@@ -194,10 +193,22 @@
                 })(root);
 
             const zoom = d3.zoom().scaleExtent([0.2, 3]).on("zoom", e => g.attr("transform", e.transform));
+            
+            // Simpan posisi terakhir jika sedang update data
+            let transformToApply = d3.zoomIdentity.translate(width / 2, 80);
+            const oldSvg = d3.select("#tree-container svg");
+            if (!oldSvg.empty()) {
+                const currentTransform = d3.zoomTransform(oldSvg.node());
+                if (currentTransform && newData) { 
+                    transformToApply = currentTransform;
+                }
+            }
+
+            containerEl.innerHTML = ''; 
             const svg = d3.select("#tree-container").append("svg").attr("width", width).attr("height", height).call(zoom);
             const g = svg.append("g");
-            const initTransform = d3.zoomIdentity.translate(width / 2, 80);
-            svg.call(zoom.transform, initTransform);
+            
+            svg.call(zoom.transform, transformToApply);
 
             window.zoomIn = () => svg.transition().duration(300).call(zoom.scaleBy, 1.3);
             window.zoomOut = () => svg.transition().duration(300).call(zoom.scaleBy, 0.7);
