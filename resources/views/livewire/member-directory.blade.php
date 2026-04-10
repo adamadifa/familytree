@@ -46,7 +46,7 @@
                         @endif
 
                         <!-- Card Body -->
-                        <div class="flex flex-col items-center">
+                        <div class="flex flex-col items-center cursor-pointer" wire:click="$dispatch('memberSelected', { id: {{ $member->id }} })">
                             <!-- Avatar -->
                             <div class="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center mb-4 ring-4 ring-white shadow-md overflow-hidden relative">
                                 @if($member->photo_path)

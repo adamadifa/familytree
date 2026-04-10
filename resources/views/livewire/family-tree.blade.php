@@ -31,6 +31,8 @@
             const containerEl = document.getElementById('tree-container');
             if(!containerEl) return;
 
+            const isMobile = window.innerWidth < 768;
+
             // Ensure we have dimensions before drawing
             if (containerEl.clientWidth === 0) {
                 setTimeout(() => renderTree(newData), 100);
@@ -42,7 +44,6 @@
 
             const width = containerEl.clientWidth;
             const height = containerEl.clientHeight;
-            // ... (rest of the D3 logic)
 
             const parentChildRels = relationships.filter(r => r.relationship_type === 'parent_child');
             const spouseRels = relationships.filter(r => r.relationship_type === 'spouse');
@@ -106,11 +107,8 @@
                         return true;
                     });
                 } else {
-                    // Ambil semua anak dari Orang Tua 1 + Orang Tua 2
-                    // Ini mencakup: Anak kandung berdua, Anak bawaan P1, dan Anak bawaan P2
                     const p1Children = Object.keys(childToParents).map(Number).filter(cid => childToParents[cid].includes(parent1));
                     const p2Children = Object.keys(childToParents).map(Number).filter(cid => childToParents[cid].includes(parent2));
-                    
                     return [...new Set([...p1Children, ...p2Children])];
                 }
             }
@@ -179,23 +177,28 @@
                 treeData = { id: 'empty', _virtual: true, children: undefined };
             }
 
-            const cardW = 110;
-            const cardH = 130;
-            const coupleGap = cardW + 80;
+            // Mobile-responsive constants
+            const cardW = isMobile ? 85 : 110;
+            const cardH = isMobile ? 105 : 130;
+            const coupleGap = cardW + (isMobile ? 50 : 80);
+            
             const root = d3.hierarchy(treeData);
 
             d3.tree()
-                .nodeSize([cardW + 80, cardH + 100])
+                .nodeSize([cardW + (isMobile ? 60 : 80), cardH + (isMobile ? 70 : 100)])
                 .separation((a, b) => {
                     let wA = a.data.spouse ? 1.5 : 1;
                     let wB = b.data.spouse ? 1.5 : 1;
                     return (wA + wB) / 2 + (a.parent === b.parent ? 0.2 : 0.5);
                 })(root);
 
-            const zoom = d3.zoom().scaleExtent([0.2, 3]).on("zoom", e => g.attr("transform", e.transform));
+            const zoom = d3.zoom().scaleExtent([0.1, 3]).on("zoom", e => g.attr("transform", e.transform));
             
-            // Simpan posisi terakhir jika sedang update data
-            let transformToApply = d3.zoomIdentity.translate(width / 2, 80);
+            // Initial position & scale
+            let initScale = isMobile ? 0.65 : 1;
+            let initTransform = d3.zoomIdentity.translate(width / 2, isMobile ? 40 : 80).scale(initScale);
+            
+            let transformToApply = initTransform;
             const oldSvg = d3.select("#tree-container svg");
             if (!oldSvg.empty()) {
                 const currentTransform = d3.zoomTransform(oldSvg.node());
@@ -221,7 +224,7 @@
             root.links().forEach(link => {
                 if (link.source.data._virtual) return;
                 const sx = link.source.x;
-                const sy = link.source.y + (cardH / 2) + 20;
+                const sy = link.source.y + (cardH / 2) + (isMobile ? 10 : 20);
                 let tx = link.target.x;
                 if (link.target.data.spouse) tx += -coupleGap / 2;
                 const ty = link.target.y - (cardH / 2);
@@ -244,14 +247,14 @@
                     const heartColor = d.data.isDivorced ? "#ef4444" : spouseColor;
                     linkG.append("line").attr("x1", d.x - coupleGap/2 + cardW/2).attr("y1", d.y).attr("x2", d.x + coupleGap/2 - cardW/2).attr("y2", d.y)
                         .attr("stroke", heartColor).attr("stroke-width", 1.5).attr("opacity", 0.6);
-                    linkG.append("circle").attr("cx", d.x).attr("cy", d.y).attr("r", 12).attr("fill", "white").attr("stroke", heartColor).attr("stroke-width", 1).attr("opacity", 0.8);
-                    linkG.append("text").attr("x", d.x).attr("y", d.y + 4).attr("text-anchor", "middle").attr("font-size", d.data.isDivorced ? "12px" : "14px").attr("fill", heartColor).text(heartIcon);
+                    linkG.append("circle").attr("cx", d.x).attr("cy", d.y).attr("r", isMobile ? 10 : 12).attr("fill", "white").attr("stroke", heartColor).attr("stroke-width", 1).attr("opacity", 0.8);
+                    linkG.append("text").attr("x", d.x).attr("y", d.y + 4).attr("text-anchor", "middle").attr("font-size", isMobile ? "10px" : "14px").attr("fill", heartColor).text(heartIcon);
                     if (hasChildren) {
-                        linkG.append("line").attr("x1", d.x).attr("y1", d.y + 12).attr("x2", d.x).attr("y2", d.y + (cardH / 2) + 20)
+                        linkG.append("line").attr("x1", d.x).attr("y1", d.y + (isMobile ? 10 : 12)).attr("x2", d.x).attr("y2", d.y + (cardH / 2) + (isMobile ? 10 : 20))
                             .attr("stroke", primaryColor).attr("stroke-width", 1.5).attr("opacity", 0.6);
                     }
                 } else if (hasChildren) {
-                    linkG.append("line").attr("x1", d.x).attr("y1", d.y + cardH/2).attr("x2", d.x).attr("y2", d.y + (cardH / 2) + 20)
+                    linkG.append("line").attr("x1", d.x).attr("y1", d.y + cardH/2).attr("x2", d.x).attr("y2", d.y + (cardH / 2) + (isMobile ? 10 : 20))
                         .attr("stroke", primaryColor).attr("stroke-width", 1.5).attr("opacity", 0.6);
                 }
             });
@@ -260,11 +263,14 @@
             function drawCard(parentG, memberData, xOffset, yOffset, isSpouse = false, isDivorced = false) {
                 const cardGroup = parentG.append("g").attr("transform", `translate(${xOffset}, ${yOffset})`);
                 cardGroup.append("rect").attr("width", cardW + 40).attr("height", cardH + 40).attr("x", -(cardW / 2) - 20).attr("y", -(cardH / 2) - 20).attr("fill", "transparent").style("pointer-events", "all");
-                cardGroup.on("mouseenter", function() {
-                    d3.select(this).select(".add-btn").transition().duration(200).style("opacity", 1).style("pointer-events", "all");
-                }).on("mouseleave", function() {
-                    d3.select(this).select(".add-btn").transition().duration(200).style("opacity", 0).style("pointer-events", "none");
-                });
+                
+                if (!isMobile) {
+                    cardGroup.on("mouseenter", function() {
+                        d3.select(this).select(".add-btn").transition().duration(200).style("opacity", 1).style("pointer-events", "all");
+                    }).on("mouseleave", function() {
+                        d3.select(this).select(".add-btn").transition().duration(200).style("opacity", 0).style("pointer-events", "none");
+                    });
+                }
 
                 const card = cardGroup.append("g").style("cursor", "pointer").on("click", (e) => {
                     e.stopPropagation();
@@ -275,26 +281,27 @@
                     .attr("fill", isSpouse ? (isDivorced ? "#fef2f2" : "#fdf2f8") : "white").attr("stroke", isSpouse ? (isDivorced ? "#ef4444" : spouseColor) : primaryColor)
                     .attr("stroke-width", 1.5).style("filter", "drop-shadow(0 2px 4px rgba(0,0,0,0.05))");
 
-                card.append("circle").attr("cx", 0).attr("cy", -25).attr("r", 28).attr("fill", isSpouse ? (isDivorced ? "#fee2e2" : "#fce7f3") : "#e0e7ff");
+                const avatarR = isMobile ? 22 : 28;
+                card.append("circle").attr("cx", 0).attr("cy", isMobile ? -20 : -25).attr("r", avatarR).attr("fill", isSpouse ? (isDivorced ? "#fee2e2" : "#fce7f3") : "#e0e7ff");
 
                 if (memberData.photo_path) {
                     const clipId = `clip-${memberData.id}-${Math.floor(Math.random() * 1000000)}`;
-                    card.append("defs").append("clipPath").attr("id", clipId).append("circle").attr("cx", 0).attr("cy", -25).attr("r", 28);
-                    card.append("image").attr("href", '/storage/' + memberData.photo_path).attr("x", -28).attr("y", -53).attr("width", 56).attr("height", 56).attr("preserveAspectRatio", "xMidYMid slice").attr("clip-path", `url(#${clipId})`);
+                    card.append("defs").append("clipPath").attr("id", clipId).append("circle").attr("cx", 0).attr("cy", isMobile ? -20 : -25).attr("r", avatarR);
+                    card.append("image").attr("href", '/storage/' + memberData.photo_path).attr("x", -avatarR).attr("y", (isMobile ? -20 : -25) - avatarR).attr("width", avatarR*2).attr("height", avatarR*2).attr("preserveAspectRatio", "xMidYMid slice").attr("clip-path", `url(#${clipId})`);
                 } else {
-                    card.append("text").attr("text-anchor", "middle").attr("y", -15).style("font-size", "26px").text(memberData.gender === 'M' ? '👨🏻‍💼' : '👩🏻‍💼');
+                    card.append("text").attr("text-anchor", "middle").attr("y", isMobile ? -12 : -15).style("font-size", isMobile ? "20px" : "26px").text(memberData.gender === 'M' ? '👨🏻‍💼' : '👩🏻‍💼');
                 }
 
-                card.append("text").attr("text-anchor", "middle").attr("y", 25).attr("fill", "#1e293b").style("font-size", "14px").style("font-weight", "700").style("font-family", "Inter, sans-serif").text(memberData.nickname || memberData.first_name);
+                card.append("text").attr("text-anchor", "middle").attr("y", isMobile ? 20 : 25).attr("fill", "#1e293b").style("font-size", isMobile ? "11px" : "14px").style("font-weight", "700").style("font-family", "Inter, sans-serif").text(memberData.nickname || memberData.first_name);
 
                 const birthYear = memberData.birth_date ? memberData.birth_date.substring(0, 4) : '';
                 if (birthYear) {
-                    card.append("rect").attr("x", -30).attr("y", 35).attr("width", 28).attr("height", 14).attr("rx", 7).attr("fill", isSpouse ? (isDivorced ? "#ef4444" : spouseColor) : primaryColor);
-                    card.append("text").attr("text-anchor", "middle").attr("x", -16).attr("y", 45).attr("fill", "white").style("font-size", "9px").style("font-weight", "700").style("font-family", "Inter, sans-serif").text(birthYear);
-                    card.append("text").attr("x", 2).attr("y", 45).attr("fill", "#94a3b8").style("font-size", "9px").style("font-family", "Inter, sans-serif").text("Tahun");
+                    card.append("rect").attr("x", isMobile ? -22 : -30).attr("y", isMobile ? 28 : 35).attr("width", isMobile ? 22 : 28).attr("height", isMobile ? 12 : 14).attr("rx", 6).attr("fill", isSpouse ? (isDivorced ? "#ef4444" : spouseColor) : primaryColor);
+                    card.append("text").attr("text-anchor", "middle").attr("x", isMobile ? -11 : -16).attr("y", isMobile ? 37 : 45).attr("fill", "white").style("font-size", isMobile ? "7px" : "9px").style("font-weight", "700").style("font-family", "Inter, sans-serif").text(birthYear);
+                    card.append("text").attr("x", isMobile ? 2 : 2).attr("y", isMobile ? 37 : 45).attr("fill", "#94a3b8").style("font-size", isMobile ? "7px" : "9px").style("font-family", "Inter, sans-serif").text("Tahun");
                 }
 
-                if (memberData.can_manage) {
+                if (!isMobile && memberData.can_manage) {
                     const buttons = cardGroup.append("g").attr("class", "add-btn").style("opacity", 0).style("pointer-events", "none");
                     function drawBtn(cx, cy, relType, iconColor, tooltip) {
                         const btn = buttons.append("g").attr("transform", `translate(${cx}, ${cy})`).style("cursor", "pointer").on("click", (e) => {
