@@ -21,6 +21,8 @@ class EditMemberModal extends Component
     public $birth_date = '';
     public $death_date = '';
     public $birth_place = '';
+    public $address = '';
+    public $nickname = '';
     public $bio = '';
     
     public $photo;
@@ -47,6 +49,8 @@ class EditMemberModal extends Component
         $this->birth_date = $member->birth_date;
         $this->death_date = $member->death_date;
         $this->birth_place = $member->birth_place;
+        $this->address = $member->address;
+        $this->nickname = $member->nickname;
         $this->bio = $member->bio;
         
         $this->existingPhoto = $member->photo_path;
@@ -104,6 +108,8 @@ class EditMemberModal extends Component
             'birth_date' => $this->birth_date ? $this->birth_date : null,
             'death_date' => $this->death_date ? $this->death_date : null,
             'birth_place' => $this->birth_place,
+            'address' => $this->address,
+            'nickname' => $this->nickname,
             'bio' => $this->bio,
             'photo_path' => $photoPath,
         ]);

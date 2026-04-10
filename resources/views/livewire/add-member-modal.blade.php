@@ -76,6 +76,7 @@
                     </div>
                     @endif
 
+                    <!-- Row 1: Names -->
                     <div class="grid grid-cols-2 gap-4">
                         <div class="space-y-1.5">
                             <label class="block text-sm font-bold text-slate-700">Nama Depan <span class="text-red-500">*</span></label>
@@ -98,6 +99,18 @@
                         </div>
                     </div>
 
+                    <!-- Row 2: Nickname -->
+                    <div class="space-y-1.5">
+                        <label class="block text-sm font-bold text-slate-700">Nama Panggilan</label>
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none group-focus-within:text-indigo-500 transition-colors">
+                                <svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+                            </div>
+                            <input wire:model="nickname" type="text" placeholder="Panggilan akrab" class="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl text-sm text-slate-900 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition outline-none shadow-sm">
+                        </div>
+                    </div>
+
+                    <!-- Row 3: Gender -->
                     <div class="space-y-1.5">
                         <label class="block text-sm font-bold text-slate-700">Jenis Kelamin <span class="text-red-500">*</span></label>
                         <div class="grid grid-cols-2 gap-3">
@@ -105,18 +118,28 @@
                                 <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ $gender === 'M' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200' : 'bg-slate-100 text-slate-400' }}">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A10.003 10.003 0 0012 3v1m0 0a10.003 10.003 0 0110 10c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09"/></svg>
                                 </div>
-                                Laki-laki
+                                <span class="truncate">Laki-laki</span>
                             </button>
                             <button type="button" wire:click="$set('gender', 'F')" class="flex items-center gap-3 p-3 rounded-xl border-2 transition text-sm font-bold {{ $gender === 'F' ? 'bg-pink-50 border-pink-500 text-pink-700 shadow-sm' : 'bg-white border-slate-100 text-slate-500 hover:border-slate-200 hover:bg-slate-50' }}">
                                 <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ $gender === 'F' ? 'bg-pink-600 text-white shadow-md shadow-pink-200' : 'bg-slate-100 text-slate-400' }}">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A10.003 10.003 0 0012 3v1m0 0a10.003 10.003 0 0110 10c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09"/></svg>
                                 </div>
-                                Perempuan
+                                <span class="truncate">Perempuan</span>
                             </button>
                         </div>
                     </div>
 
+                    <!-- Row 4: Life Events -->
                     <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-1.5">
+                            <label class="block text-sm font-bold text-slate-700">Tempat Lahir</label>
+                            <div class="relative group">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none group-focus-within:text-indigo-500 transition-colors">
+                                    <svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                </div>
+                                <input wire:model="birthPlace" type="text" placeholder="Kota" class="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl text-sm text-slate-900 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition outline-none shadow-sm">
+                            </div>
+                        </div>
                         <div class="space-y-1.5">
                             <label class="block text-sm font-bold text-slate-700">Tanggal Lahir</label>
                             <div class="relative group">
@@ -124,22 +147,24 @@
                                     <svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                                 </div>
                                 <div x-data x-init="flatpickr($refs.picker, { dateFormat: 'Y-m-d', allowInput: true })">
-                                    <input x-ref="picker" wire:model="birthDate" type="text" placeholder="Pilih Tanggal" class="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl text-sm text-slate-900 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition outline-none cursor-pointer bg-white shadow-sm">
+                                    <input x-ref="picker" wire:model="birthDate" type="text" placeholder="YYYY-MM-DD" class="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl text-sm text-slate-900 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition outline-none cursor-pointer bg-white shadow-sm">
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="space-y-1.5">
-                            <label class="block text-sm font-bold text-slate-700">Tempat Lahir</label>
-                            <div class="relative group">
-                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none group-focus-within:text-indigo-500 transition-colors">
-                                    <svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                                </div>
-                                <input wire:model="birthPlace" type="text" placeholder="Jakarta" class="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl text-sm text-slate-900 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition outline-none shadow-sm">
                             </div>
                         </div>
                     </div>
 
+                    <!-- Row 4: Address -->
+                    <div class="space-y-1.5">
+                        <label class="block text-sm font-bold text-slate-700">Alamat</label>
+                        <div class="relative group">
+                            <div class="absolute top-3.5 left-3.5 pointer-events-none group-focus-within:text-indigo-500 transition-colors">
+                                <svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            </div>
+                            <textarea wire:model="address" rows="2" placeholder="Alamat lengkap..." class="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl text-sm text-slate-900 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition outline-none shadow-sm resize-none"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Row 5: Bio -->
                     <div class="space-y-1.5 pb-2">
                         <label class="block text-sm font-bold text-slate-700">Biografi Singkat</label>
                         <div class="relative group">

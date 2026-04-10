@@ -17,6 +17,8 @@ class AddMemberModal extends Component
     public $gender = 'M';
     public $birthDate;
     public $birthPlace;
+    public $nickname;
+    public $address;
     public $bio;
     public $photo;
     public $otherParentId;
@@ -26,7 +28,7 @@ class AddMemberModal extends Component
 
     public function open($relativeId = null, $relationshipType = 'root')
     {
-        $this->reset(['firstName', 'lastName', 'gender', 'birthDate', 'birthPlace', 'bio', 'photo', 'otherParentId', 'spouses']);
+        $this->reset(['firstName', 'lastName', 'nickname', 'gender', 'birthDate', 'birthPlace', 'address', 'bio', 'photo', 'otherParentId', 'spouses']);
         
         $this->relativeId = $relativeId;
         $this->relationshipType = $relationshipType;
@@ -75,6 +77,8 @@ class AddMemberModal extends Component
             'gender' => $this->gender,
             'birth_date' => $this->birthDate,
             'birth_place' => $this->birthPlace,
+            'nickname' => $this->nickname,
+            'address' => $this->address,
             'bio' => $this->bio,
             'photo_path' => $photoPath,
             'created_by' => auth()->id() ?? 1, // Fallback for testing

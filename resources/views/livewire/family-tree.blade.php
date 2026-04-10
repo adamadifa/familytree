@@ -285,7 +285,7 @@
                     card.append("text").attr("text-anchor", "middle").attr("y", -15).style("font-size", "26px").text(memberData.gender === 'M' ? '👨🏻‍💼' : '👩🏻‍💼');
                 }
 
-                card.append("text").attr("text-anchor", "middle").attr("y", 25).attr("fill", "#1e293b").style("font-size", "14px").style("font-weight", "700").style("font-family", "Inter, sans-serif").text(memberData.first_name);
+                card.append("text").attr("text-anchor", "middle").attr("y", 25).attr("fill", "#1e293b").style("font-size", "14px").style("font-weight", "700").style("font-family", "Inter, sans-serif").text(memberData.nickname || memberData.first_name);
 
                 const birthYear = memberData.birth_date ? memberData.birth_date.substring(0, 4) : '';
                 if (birthYear) {

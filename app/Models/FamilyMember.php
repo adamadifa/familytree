@@ -10,8 +10,8 @@ class FamilyMember extends Model
     use HasFactory;
 
     protected $fillable = [
-        'first_name', 'last_name', 'gender', 'birth_date', 'death_date',
-        'birth_place', 'death_place', 'bio', 'photo_path', 'created_by', 'linked_user_id'
+        'first_name', 'last_name', 'nickname', 'gender', 'birth_date', 'death_date',
+        'birth_place', 'death_place', 'address', 'bio', 'photo_path', 'created_by', 'linked_user_id'
     ];
 
     public function relationships()
