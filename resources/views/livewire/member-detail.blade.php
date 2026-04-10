@@ -1,13 +1,42 @@
-<div class="bg-white rounded-xl border border-slate-200 p-5 overflow-y-auto" style="max-height: 78vh;">
+<div class="bg-white rounded-xl border border-slate-200 p-5 overflow-y-auto" style="max-height: 78vh;" x-data="{ lightbox: false }">
     @if($member)
         <div class="flex flex-col items-center text-center">
             <!-- Avatar -->
-            <div class="w-20 h-20 rounded-full border-2 {{ $member->gender === 'M' ? 'border-indigo-200' : 'border-pink-200' }} overflow-hidden bg-slate-100 flex items-center justify-center mb-4">
+            <div class="w-24 h-24 rounded-full border-2 {{ $member->gender === 'M' ? 'border-indigo-200' : 'border-pink-200' }} overflow-hidden bg-slate-100 flex items-center justify-center mb-4 cursor-pointer active:scale-95 transition-transform" 
+                 @click="lightbox = true">
                 @if($member->photo_path)
-                    <img src="{{ Storage::url($member->photo_path) }}" class="w-full h-full object-cover">
+                    <img src="{{ Storage::url($member->photo_path) }}" class="w-full h-full object-cover shadow-sm">
                 @else
-                    <svg class="w-10 h-10 text-slate-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"></path></svg>
+                    <svg class="w-12 h-12 text-slate-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"></path></svg>
                 @endif
+            </div>
+
+            <!-- Lightbox Overlay -->
+            <div x-show="lightbox" 
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/90 backdrop-blur-md p-6"
+                 style="display: none;"
+                 @click="lightbox = false">
+                
+                <div class="relative max-w-full max-h-full" @click.stop>
+                    <button @click="lightbox = false" class="absolute -top-12 right-0 p-2 bg-white/10 rounded-full text-white hover:bg-white/20 transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                    
+                    @if($member->photo_path)
+                        <img src="{{ Storage::url($member->photo_path) }}" class="max-w-[90vw] max-h-[80vh] rounded-2xl shadow-2xl border-2 border-white/20 object-contain">
+                    @endif
+                    
+                    <div class="mt-4 text-center">
+                        <p class="text-white font-bold text-lg">{{ $member->first_name }} {{ $member->last_name }}</p>
+                        <p class="text-white/60 text-xs">{{ $member->gender === 'M' ? 'Laki-laki' : 'Perempuan' }}</p>
+                    </div>
+                </div>
             </div>
 
             <h3 class="text-base font-bold text-slate-900 mb-0.5">{{ $member->first_name }} {{ $member->last_name }}</h3>
